@@ -1,14 +1,17 @@
 package fixtures;
 
-public class Room extends Fixtures{
-	
-	Room[] exits = new Room[4];
+import java.util.HashMap;
+import java.util.Map;
 
+public class Room extends Fixtures{
+	//Exits and Items Map
+	Map<String,Room> exitsAndItems = new HashMap<>();
+	//default constructor
 	public Room() {
 		super("name", "shortDescription", "longDescription");
 	}
 	
-	
+	//constructor
 	public Room(String name, String shortDescription, String longDescription) {
 		super(name, shortDescription, longDescription);
 	}
@@ -18,67 +21,58 @@ public class Room extends Fixtures{
 				"\n\n" + getLongDescription();
 	}
 	
+	public String toStringShort() {
+		return getName() +
+				"\n\n" + getShortDescription();
+	}
+	
 	public void printExits() {
 		System.out.println();
-		System.out.println("Exits:\n");
-		for(int i = 0; i < exits.length; i++) {
-			
-			if (exits[i] != null) {
+		System.out.println("Exits and Visible Items:\n");
+		for(String key: exitsAndItems.keySet()) {
+				switch(key) {
 				
-				switch(i) {
-				
-				case 0:
-					System.out.println("North: " + exits[i].getShortDescription());
+				case "North":
+					System.out.println("North: " + exitsAndItems.get(key).getShortDescription());
 					break;
-				case 1:
-					System.out.println("East: " + exits[i].getShortDescription());
+				case "East":
+					System.out.println("East: " + exitsAndItems.get(key).getShortDescription());
 					break;
-				case 2:
-					System.out.println("South: " + exits[i].getShortDescription());
+				case "South":
+					System.out.println("South: " + exitsAndItems.get(key).getShortDescription());
 					break;
-				case 3:
-					System.out.println("West: " + exits[i].getShortDescription());
+				case "West":
+					System.out.println("West: " + exitsAndItems.get(key).getShortDescription());
 					break;
-					default:
+				case "Item":
+					System.out.println("Item: " + exitsAndItems.get(key).getShortDescription());
+					break;
+				default:
 						System.out.println("Outside of bounds");
 						break;	
 				}
 				
 			}
-			else {
-				continue;
-			}
 		}
+	// getters and setters
+	public Room getExitDirection(String direction) {
+		return exitsAndItems.get(direction);
 	}
 	
-	public Room getNorthExit() {
-		return exits[0];
+	public Room getItem(String item) {
+		return exitsAndItems.get(item);
 	}
 	
-	public Room getEastExit() {
-		return exits[1];
+	public void setExitDirection(String key, Room exit) {
+		exitsAndItems.put(key, exit);
 	}
 	
-	public Room getSouthExit() {
-		return exits[2];
+	public void setItem(String key, Room item) {
+		exitsAndItems.put(key, item);
 	}
-	
-	public Room getWestExit() {
-		return exits[3];
-	}
-	
-	public void setNorthExit(Room exit) {
-		exits[0] = exit;
-	}
-	public void setEastExit(Room exit) {
-		exits[1] = exit;
-	}
-	
-	public void setSouthExit(Room exit) {
-		exits[2] = exit;
-	}
-	public void setWestExit(Room exit) {
-		exits[3] = exit;
+	//Remove items from exitsAndItems
+	public void removeItem(String key) {
+		exitsAndItems.remove(key);
 	}
 	
 }
